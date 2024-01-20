@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      crossorigin="anonymous"
+    />  
+    <title>{% block title %}Home{% endblock %}</title>
+</head>
+<body>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Form Submission and Redirect</title>
+    </head>
+    <body>
+    
+      <h1>Form Submission and Redirect Example</h1>
+    
+      <form id="myForm">
+        <label for="inputData">Enter Data:</label>
+        <input type="text" id="inputData" name="inputData" required>
+        <button type="submit">Submit</button>
+      </form>
+    
+      <script>
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+          // Prevent the default form submission
+          event.preventDefault();
+    
+          // Get the data from the input field
+          var inputData = document.getElementById("inputData").value;
+    
+          // Check if the data is not empty
+          if (inputData.trim() !== "") {
+            // Send a POST request to the backend
+            fetch('https://example.com/submit-form', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ data: inputData }),
+            })
+            .then(response => {
+              if (response.ok) {
+                // Redirect to another webpage upon successful submission
+                window.location.href = 'result.html';
+              } else {
+                // Handle errors, you can customize this based on your backend response
+                alert('Failed to submit form. Please try again.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('An unexpected error occurred. Please try again.');
+            });
+          } else {
+            // Display an alert if the data is empty
+            alert("Please enter valid data");
+          }
+        });
+      </script>
+
+    </body>
+
+
+</html>
