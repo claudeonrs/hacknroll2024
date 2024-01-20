@@ -19,62 +19,56 @@
 </head>
 <body>
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Form Submission and Redirect</title>
-    </head>
-    <body>
-    
-      <h1>Form Submission and Redirect Example</h1>
-    
-      <form id="myForm">
-        <label for="inputData">Enter Data:</label>
-        <input type="text" id="inputData" name="inputData" required>
-        <button type="submit">Submit</button>
-      </form>
-    
-      <script>
-        document.getElementById("myForm").addEventListener("submit", function(event) {
-          // Prevent the default form submission
-          event.preventDefault();
-    
-          // Get the data from the input field
-          var inputData = document.getElementById("inputData").value;
-    
-          // Check if the data is not empty
-          if (inputData.trim() !== "") {
-            // Send a POST request to the backend
-            fetch('https://example.com/submit-form', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ data: inputData }),
-            })
-            .then(response => {
-              if (response.ok) {
-                // Redirect to another webpage upon successful submission
-                window.location.href = 'result.html';
-              } else {
-                // Handle errors, you can customize this based on your backend response
-                alert('Failed to submit form. Please try again.');
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              alert('An unexpected error occurred. Please try again.');
-            });
-          } else {
-            // Display an alert if the data is empty
-            alert("Please enter valid data");
-          }
-        });
-      </script>
-
-    </body>
+    <h1>Form Submission and API Response Example</h1>
+  
+    <form id="myForm">
+      <label for="inputData">Enter Data:</label>
+      <input type="text" id="inputData" name="inputData" required>
+      <button type="submit">Submit</button>
+    </form>
+  
+    <script>
+      document.getElementById("myForm").addEventListener("submit", function(event) {
+        // Prevent the default form submission
+        event.preventDefault();
+  
+        // Get the data from the input field
+        var inputData = document.getElementById("inputData").value;
+  
+        // Check if the data is not empty
+        if (inputData.trim() !== "") {
+          // Send a POST request to the backend API
+          fetch('https://example.com/api/submit-form', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: inputData }),
+          })
+          .then(response => {
+            if (response.ok) {
+              // Parse the JSON response
+              return response.json();
+            } else {
+              throw new Error('Failed to submit form. Please try again.');
+            }
+          })
+          .then(data => {
+            // Redirect to another HTML page with the response data as a query parameter
+            window.location.href = `result.html?message=${encodeURIComponent(data.message)}`;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert(error.message);
+          });
+        } else {
+          // Display an alert if the data is empty
+          alert("Please enter valid data");
+        }
+      });
+    </script>
+  
+  </body>
 
 
 </html>
