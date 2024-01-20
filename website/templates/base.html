@@ -38,24 +38,21 @@
         // Check if the data is not empty
         if (inputData.trim() !== "") {
           // Send a POST request to the backend API
-          fetch('https://example.com/api/submit-form', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ data: inputData }),
+          fetch('/api/get_sentiments?url='+inputData, {
+            method: 'GET'
           })
-          .then(response => {
-            if (response.ok) {
-              // Parse the JSON response
-              return response.json();
-            } else {
-              throw new Error('Failed to submit form. Please try again.');
-            }
-          })
+          // .then(response => {
+          //   if (response.ok) {
+          //     // Parse the JSON response
+          //     return response.json();
+          //   } else {
+          //     throw new Error('Failed to submit form. Please try again.');
+          //   }
+          // })
           .then(data => {
             // Redirect to another HTML page with the response data as a query parameter
-            window.location.href = `result.html?message=${encodeURIComponent(data.message)}`;
+            console.log(data.emotions_data);
+            console.log(data.sentiments_data);
           })
           .catch(error => {
             console.error('Error:', error);
