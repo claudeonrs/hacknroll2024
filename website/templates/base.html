@@ -4,29 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width-device-width, initial-scale=1.0">
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      crossorigin="anonymous"
-    />  
+    <link rel="stylesheet" href="/static/style_base.css">
+
     <title>{% block title %}Home{% endblock %}</title>
 </head>
 <body>
 
-    <h1>Form Submission and API Response Example</h1>
-  
-    <form id="myForm">
-      <label for="inputData">Enter Data:</label>
-      <input type="text" id="inputData" name="inputData" required>
-      <button type="submit">Submit</button>
-    </form>
-  
+    
+    <div class="container">
+      <form id="myForm">
+        <input type="text" placeholder="Copy & Paste Link Here" id="inputData" name="inputData" required>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
     <script>
       document.getElementById("myForm").addEventListener("submit", function(event) {
         // Prevent the default form submission
@@ -41,19 +31,23 @@
           fetch('/api/get_sentiments?url='+inputData, {
             method: 'GET'
           })
-          // .then(response => {
-          //   if (response.ok) {
-          //     // Parse the JSON response
-          //     return response.json();
-          //   } else {
-          //     throw new Error('Failed to submit form. Please try again.');
-          //   }
-          // })
-          .then(data => {
-            // Redirect to another HTML page with the response data as a query parameter
-            console.log(data.emotions_data);
-            console.log(data.sentiments_data);
+          .then(response => {
+            if (response.ok) {
+              // Parse the JSON response
+              window.location.href = "/result"
+            } else {
+              throw new Error('Failed to submit form. Please try again.');
+            }
           })
+          // .then(data => {
+          //   // Redirect to another HTML page with the response data as a query parameter
+          //   // console.log(data.emotions_data);
+          //   // console.log(data.sentiments_data);
+          //   fetch('/result', {
+          //   method: 'GET',
+          //   body: data
+          // })
+          // })
           .catch(error => {
             console.error('Error:', error);
             alert(error.message);
