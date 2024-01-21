@@ -1,23 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width-device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Two Columns Example</title>
+  <link rel="stylesheet" href="/static/style_result.css">
+  <style type="text/cxx">
+    .chartBox{
+      width: 100px;
+    }
+  </style>
 </head>
 <body>
-    <h1>API Response Page</h1>
-    
-    <div id="responseContainer"></div>
-    
-    <script>
-    // Extract the message from the query parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const message = urlParams.get('message');
-    
-    // Display the message on the page
-    document.getElementById("responseContainer").innerHTML = `<p>API Response: ${message}</p>`;
-    </script>  
+
+  <div class="container">
+
+
+
+    <div class="column-1">
+      <div class="row">
+        <h2><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></i></h2>
+        <p>NIL</p>
+      </div>
+      <div class="row">
+        <h2><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></h2>
+        <p>NIL</p>
+      </div>
+      <div class="row">
+        <h2><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></h2>
+        <p>The app needs improvement</p>
+      </div>
+      <div class="row">
+        <h2><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></h2>
+        <p>useless product</p>
+      </div>
+      <div class="row">
+        <h2><i class="fa-solid fa-star"></i></h2>
+        <p>huge scam</p>
+      </div>        
+    </div>
+    <div class="column-2">
+
+
+
+      <!-- -----chartbox---- -->
+      <div class="chartBox"">
+        <canvas id="myChart"></canvas>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        //setup
+        const labels = ['Positive', 'Neutral', 'Negative'];
+        const data = { labels: labels,
+              datasets: [{
+                  label: '% of Reviews',
+                  data: ["{{sentiment_data.get('roberta_pos', 0)/(sentiment_data.get('roberta_pos', 0)+sentiment_data.get('roberta_neu', 0)+sentiment_data.get('roberta_neg', 0))*100}}", "{{sentiment_data.get('roberta_neu', 0)/(sentiment_data.get('roberta_pos', 0)+sentiment_data.get('roberta_neu', 0)+sentiment_data.get('roberta_neg', 0))*100}}", "{{sentiment_data.get('roberta_neg', 0)/(sentiment_data.get('roberta_pos', 0)+sentiment_data.get('roberta_neu', 0)+sentiment_data.get('roberta_neg', 0))*100}}"],
+                  backgroundColor: [
+                      'rgba(0, 250, 0, 1)',
+                      'rgba(169, 169, 169, 1)',
+                      'rgba(255, 99, 132, 1)'
+                      
+                  ],
+                  borderColor: [
+                      'rgba(0, 250, 0, 1)',
+                      'rgba(169, 169, 169, 1)',
+                      'rgba(255, 99, 132, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          };
+        //config
+        const config = {
+          type: 'bar',
+          data,
+          options: {
+            indexAxis: 'y',
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+          }
+        };
+  
+        //render block
+        const myChart = new Chart(
+          document.getElementById('myChart'),
+          config
+        );
+      </script>
+      {% for emotion, count in emotions_data.items() %}
+        <h1>{{emotions_dict_emojis.get(emotion)}}</h1>
+        <p><b>{{emotion|capitalize}}:</b> {{count}}</p> 
+      {% endfor %}
+    </div>
+  </div>
+
+ 
+<script src="https://kit.fontawesome.com/decab30556.js" crossorigin="anonymous"></script>
+
+
 </body>
+
 </html>
